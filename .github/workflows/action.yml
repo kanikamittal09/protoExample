@@ -32,8 +32,9 @@ jobs:
       - name: Run a multi-line script
         run: |
           if ! [ -f protolock.tgz ]; then
-            curl -L -o protolock.tgz https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz          fi
-          tar xzf protolock.tgz
+            curl -L -o protolock.tgz https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz          
+          fi
+          tar xzf /protolock/protolock.tgz
           ./protolock status
           if [ "$COMMIT" = "true" ]; then
             ./protolock commit
