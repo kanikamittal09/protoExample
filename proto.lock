@@ -61,63 +61,6 @@
           }
         ]
       }
-    },
-    {
-      "protopath": "target:/:classes:/:example.proto",
-      "def": {
-        "messages": [
-          {
-            "name": "Person",
-            "fields": [
-              {
-                "id": 1,
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "id": 2,
-                "name": "id",
-                "type": "int32"
-              },
-              {
-                "id": 3,
-                "name": "email",
-                "type": "string"
-              },
-              {
-                "id": 4,
-                "name": "numbers",
-                "type": "string",
-                "is_repeated": true
-              }
-            ]
-          },
-          {
-            "name": "AddressBook",
-            "fields": [
-              {
-                "id": 1,
-                "name": "people",
-                "type": "Person",
-                "is_repeated": true
-              }
-            ]
-          }
-        ],
-        "package": {
-          "name": "protobuf"
-        },
-        "options": [
-          {
-            "name": "java_package",
-            "value": "com.baeldung.protobuf"
-          },
-          {
-            "name": "java_outer_classname",
-            "value": "AddressBookProtos"
-          }
-        ]
-      }
     }
   ]
 }
