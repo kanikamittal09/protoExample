@@ -36,7 +36,7 @@ jobs:
         run: |
           git checkout feature
           if ! [ -f protolock.tgz ]; then
-            curl -L -o protolock.tgz https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz          
+            curl -L -o protolock.tgz https://github.com/nilslice/protolock/releases/download/v0.16.0/protolock.20220302T184110Z.linux-amd64.tgz          
           fi
           tar xzf protolock.tgz
           ./protolock status
