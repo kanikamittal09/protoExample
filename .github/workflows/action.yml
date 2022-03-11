@@ -39,7 +39,7 @@ jobs:
             curl -L -o protolock.tgz https://github.com/nilslice/protolock/releases/download/v0.15.2/protolock.20210218T172155Z.linux-amd64.tgz        
           fi
           tar xzf protolock.tgz
-          ./protolock status
+          ./protolock status --debug
           if [ "$COMMIT" = "true" ]; then
             ./protolock commit
             git add proto.lock
