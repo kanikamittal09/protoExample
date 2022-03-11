@@ -1,0 +1,67 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      PATH:
+        required: true
+      PROTOLOCK_URL:
+        description: "Download link for protolock tarball"
+        default: "https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz"
+        required: true
+      COMMIT:
+        description: "Whether the protolock changes should be committed back to the repository. Requires git. Values: true | false"
+        required: false
+        default: "false"
+      LOCKDIR:
+        description: "DEPRECATED - use PATH instead. LOCKDIR is broken. The directory containing your proto.lock file"
+        required: false
+        default: .
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          pwd
+          cd $PROTOPATH
+          mkdir -p /protolock 
+          if ! [ -f /protolock/protolock.tgz ]; then
+            curl -L -o /protolock/protolock.tgz $PROTOLOCK_URL
+          fi
+          tar xzf /protolock/protolock.tgz
+          ./protolock status
+          if [ "$COMMIT" = "true" ]; then
+            ./protolock commit
+            git add proto.lock
+            if [[ $(git diff --staged --quiet proto.lock)$? == 1 ]]; then 
+              git config user.email "ci@zepben.com"
+              git config user.name "Zepben CI"
+              git commit -m "Update protolock status"
+              git push 
+            fi
+          fi
+        shell: bash
+        env:
+          PROTOPATH: ${{ inputs.PATH }}
+          PROTOLOCK_URL: ${{ inputs.PROTOLOCK_URL }}
+          COMMIT: ${{ inputs.COMMIT }}
+          LOCKDIR: ${{ inputs.LOCKDIR }}
