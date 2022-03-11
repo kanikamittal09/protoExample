@@ -42,8 +42,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           pwd
-          cd $PROTOPATH
-          mkdir -p /protolock 
+          mkdir -p ${{ github.workspace }}/protolock 
           if ! [ -f /protolock/protolock.tgz ]; then
             curl -L -o /protolock/protolock.tgz $PROTOLOCK_URL
           fi
