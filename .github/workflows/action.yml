@@ -11,8 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      PATH:
-        required: true
       PROTOLOCK_URL:
         description: "Download link for protolock tarball"
         default: "https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz"
@@ -21,10 +19,6 @@ on:
         description: "Whether the protolock changes should be committed back to the repository. Requires git. Values: true | false"
         required: false
         default: "false"
-      LOCKDIR:
-        description: "DEPRECATED - use PATH instead. LOCKDIR is broken. The directory containing your proto.lock file"
-        required: false
-        default: .
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,12 +35,10 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          pwd
-          mkdir -p ${{ github.workspace }}/protolock 
-          if ! [ -f /protolock/protolock.tgz ]; then
-            curl -L -o /protolock/protolock.tgz $PROTOLOCK_URL
+          if ! [ -f protolock.tgz ]; then
+            curl -L -o protolock.tgz $PROTOLOCK_URL
           fi
-          tar xzf /protolock/protolock.tgz
+          tar xzf protolock.tgz
           ./protolock status
           if [ "$COMMIT" = "true" ]; then
             ./protolock commit
@@ -60,7 +52,5 @@ jobs:
           fi
         shell: bash
         env:
-          PROTOPATH: ${{ inputs.PATH }}
           PROTOLOCK_URL: ${{ inputs.PROTOLOCK_URL }}
           COMMIT: ${{ inputs.COMMIT }}
-          LOCKDIR: ${{ inputs.LOCKDIR }}
