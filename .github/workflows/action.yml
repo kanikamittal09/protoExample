@@ -11,10 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      PROTOLOCK_URL:
-        description: "Download link for protolock tarball"
-        default: "https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz"
-        required: true
       COMMIT:
         description: "Whether the protolock changes should be committed back to the repository. Requires git. Values: true | false"
         required: false
@@ -36,8 +32,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           if ! [ -f protolock.tgz ]; then
-            curl -L -o protolock.tgz $PROTOLOCK_URL
-          fi
+            curl -L -o protolock.tgz https://github.com/nilslice/protolock/releases/download/v0.15.0/protolock.20191021T032920Z.linux-amd64.tgz          fi
           tar xzf protolock.tgz
           ./protolock status
           if [ "$COMMIT" = "true" ]; then
@@ -52,5 +47,4 @@ jobs:
           fi
         shell: bash
         env:
-          PROTOLOCK_URL: ${{ inputs.PROTOLOCK_URL }}
           COMMIT: ${{ inputs.COMMIT }}
